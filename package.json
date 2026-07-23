@@ -2,20 +2,48 @@
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "file-scripts",
   "title": "File Scripts",
-  "description": "A Raycast extension",
+  "description": "Run scripts on the current Finder selection — ffmpeg compression presets for screen recordings, with live progress",
   "icon": "command-icon.png",
   "author": "jurre_jan",
   "categories": ["Developer Tools"],
   "license": "MIT",
   "commands": [
     {
-      "name": "hello",
-      "title": "Hello",
-      "description": "Starter view command — replace with your own",
+      "name": "run-script",
+      "title": "Run Script on Selection",
+      "description": "Detect the Finder selection, pick an applicable script, run it with live progress",
       "mode": "view"
     }
   ],
   "preferences": [
+    {
+      "name": "ffmpegPath",
+      "type": "textfield",
+      "title": "ffmpeg binary",
+      "description": "Absolute path to ffmpeg (Raycast has no user PATH)",
+      "default": "/opt/homebrew/bin/ffmpeg",
+      "required": false
+    },
+    {
+      "name": "ffprobePath",
+      "type": "textfield",
+      "title": "ffprobe binary",
+      "description": "Absolute path to ffprobe",
+      "default": "/opt/homebrew/bin/ffprobe",
+      "required": false
+    },
+    {
+      "name": "hevcEncoder",
+      "type": "dropdown",
+      "title": "HEVC encoder",
+      "description": "libx265: best size-per-quality on screen content. hevc_videotoolbox: ~10× faster hardware encode, larger files",
+      "default": "libx265",
+      "required": false,
+      "data": [
+        { "title": "libx265 (software, smaller files)", "value": "libx265" },
+        { "title": "hevc_videotoolbox (hardware, faster)", "value": "hevc_videotoolbox" }
+      ]
+    },
     {
       "name": "extraPath",
       "type": "textfield",

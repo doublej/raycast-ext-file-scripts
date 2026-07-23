@@ -1,5 +1,5 @@
 {
-  "description": "A Raycast extension",
+  "description": "Raycast: run scripts on Finder selection (ffmpeg compress presets)",
   "type": "node",
   "framework": "raycast",
   "archived": false

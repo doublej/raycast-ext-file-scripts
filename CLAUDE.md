@@ -1,36 +1,53 @@
 # File Scripts
 
-> A Raycast extension
+> Run scripts on the current Finder selection — ffmpeg compression presets for screen recordings, with live progress.
 
 ## What this is
 
-A Raycast extension: React + TypeScript, built and run by the `ray` CLI (ships with the Raycast app). `bun` for install, ESLint (`@raycast` config) for lint. No test suite — verification is lint + build + manual run in Raycast.
+A Raycast extension: detect the Finder selection (clipboard paths as fallback), offer the scripts applicable to the selected extensions + selection kind (single / multiple / folder), run them sequentially with per-file live progress. First script family: ffmpeg presets that compress macOS screen recordings — each preset one distinct strategy (fps, CRF, downscale, codec, combo).
 
-## Mental model
+## Architecture
 
 ```
-package.json        # Raycast manifest — commands[], preferences[], deps
+package.json                  # Raycast manifest — run-script command, ffmpeg prefs
 src/
-├── hello.tsx       # one file per command (name matches commands[].name)
-└── lib/prefs.ts    # typed preferences + PATH builder
-assets/
-└── command-icon.png
+├── run-script.tsx            # single view command: detect → pick script → run → live progress
+└── lib/
+    ├── prefs.ts              # ffmpegPath/ffprobePath/extraPath expansion, buildPath()
+    ├── selection.ts          # osascript Finder selection, clipboard fallback, classify()
+    ├── output.ts             # sibling naming + collision dedup + tmp-file protocol
+    ├── ffmpeg.ts             # ffprobe probe(); runEncode() with -progress parsing + abort
+    ├── registry.ts           # ScriptDef/RunContext/RunResult + applicableScripts()
+    └── scripts/
+        └── ffmpeg-presets.ts # preset data table + presetToScript() adapter
 ```
 
-Each entry in `package.json` → `commands[]` maps to a `src/<name>.tsx` file whose default export is the command. Preferences declared in the manifest are read via `getPreferenceValues` (wrapped in `src/lib/prefs.ts`).
+- **selection.ts** — `classify()`: 1 dir → `folder` (targets = its direct child files); 1 file → `single`; else `multiple` (dirs expanded one level). Paths normalized (`file://` URLs, `~`).
+- **output.ts** — outputs are siblings with a suffix (`demo.mov` → `demo.fps15.mov`), collisions auto-dedup (`-2`, `-3`…). Encodes go to `<stem><suffix>.tmp<ext>`, renamed on exit 0, unlinked on fail/cancel. Originals are never overwritten (`ffmpeg -n` backstop).
+- **ffmpeg.ts** — progress via `-progress pipe:1 -nostats`; pct = out_time / probed duration (indeterminate when duration is N/A); stderr kept in a ring buffer for error detail; AbortSignal SIGKILLs the child.
+- **run-script.tsx** — sequential encodes (one ffmpeg at a time — predictable CPU/thermals); one Animated toast mutated per tick (`[2/5] demo.mov · 42% · Max Squeeze`), flipped to Success/Failure at the end; cancel via toast primary action or the row action.
+
+## Gotchas
+
+1. **Raycast has no user PATH.** ffmpeg/ffprobe are resolved from absolute-path preferences (`ffmpegPath`/`ffprobePath`), never from PATH. Anything else spawned goes through `buildPath()` (`src/lib/prefs.ts`).
+2. **ffmpeg's `out_time_ms` is actually microseconds.** Progress parsing uses `out_time_us` (with the `out_time` timecode as fallback) — do not "fix" it to read `out_time_ms` as milliseconds.
+3. **Finder selection needs Automation permission.** osascript fails with `Not authorized` (-1743) until System Settings › Privacy & Security › Automation → Raycast → Finder is enabled. The empty-state hints at this; keep `isAutomationError()` in sync with the error text.
+
+## Adding a script family
+
+One file + one array entry:
+
+1. Create `src/lib/scripts/<family>.ts` exporting `ScriptDef[]` (see `ffmpeg-presets.ts` — a declarative data table + adapter).
+2. Spread it into `ALL_SCRIPTS` in `src/lib/registry.ts`.
+
+Matching is declarative via `matcher: { extensions, kinds }`; the picker groups by `family` and shows `subtitle` as the strategy line.
 
 ## Invariants
 
 - `package.json` **is** the Raycast manifest — commands and preferences live there, not in code.
-- Raycast spawns processes with a bare env: **no user PATH**. Any spawned binary must be resolved via the `extraPath` preference + `buildPath()` (`src/lib/prefs.ts`), never assumed on PATH.
-- Spawn with argv arrays (`execFile`), never shell strings — filenames contain spaces/unicode.
-- ESLint with the `@raycast` config is the only linter; `ray lint` runs it.
-
-## Common change patterns
-
-- **Add a command** → new `src/<name>.tsx` with a default-export component + entry in `commands[]` in `package.json`.
-- **Add a preference** → entry in `preferences[]` + extend the `Prefs` interface in `src/lib/prefs.ts`.
-- **Add a dependency** → `bun add <pkg>`.
+- Spawn with argv arrays (`execFile`/`spawn`), never shell strings — filenames contain spaces/unicode.
+- Never write over an input file; all outputs are new siblings.
+- ESLint with the `@raycast` config is the only linter; `ray lint` runs it (Prettier included).
 
 ## Verification
 

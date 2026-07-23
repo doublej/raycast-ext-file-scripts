@@ -1,6 +1,6 @@
 # File Scripts
 
-> A Raycast extension
+> Run scripts on the current Finder selection — ffmpeg compression presets for screen recordings, with live progress.
 
 ## Stack
 
@@ -18,8 +18,8 @@
 
 ```
 src/
-├── hello.tsx       # command entry (one file per manifest command)
-└── lib/prefs.ts    # typed preferences + PATH builder
+├── run-script.tsx  # view command: detect → pick script → run → live progress
+└── lib/            # prefs, selection, output, ffmpeg, registry, scripts/
 package.json        # Raycast manifest: commands, preferences, deps
 tsconfig.json       # strict, react-jsx, noEmit
 ```
@@ -44,6 +44,7 @@ No test suite — verify manually in Raycast after `bun run dev`.
 
 - Add a command: create `src/<name>.tsx` (default-export component) and add the matching `commands[]` entry in `package.json`
 - Add a preference: add to `preferences[]` in `package.json`, extend `Prefs` in `src/lib/prefs.ts`
+- Add a script family: new file in `src/lib/scripts/` exporting `ScriptDef[]`, spread into `ALL_SCRIPTS` in `src/lib/registry.ts` (see CLAUDE.md)
 - Add a dependency: `bun add <package>`
 
 ### Boundaries
