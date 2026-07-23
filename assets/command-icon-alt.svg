@@ -1,72 +1,81 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
   <defs>
-    <!-- background vignette -->
-    <radialGradient id="bg" cx="0.5" cy="0.46" r="0.75">
-      <stop offset="0" stop-color="#1b1e27"/>
-      <stop offset="1" stop-color="#111319"/>
+    <!-- background vignette (center reads slightly bluer/lighter) -->
+    <radialGradient id="bg" cx="0.5" cy="0.5" r="0.72">
+      <stop offset="0" stop-color="#10141f"/>
+      <stop offset="1" stop-color="#0e1119"/>
     </radialGradient>
-    <!-- left chevron: violet → indigo -->
-    <linearGradient id="chevL" x1="0" y1="0" x2="0.4" y2="1">
-      <stop offset="0" stop-color="#8b5cf6"/>
-      <stop offset="1" stop-color="#5457ea"/>
+    <!-- left chevron: outer indigo → apex blue (horizontal — both tips equally indigo) -->
+    <linearGradient id="chevL" x1="0" y1="0.5" x2="1" y2="0.5">
+      <stop offset="0" stop-color="#5b2af9"/>
+      <stop offset="1" stop-color="#2f68fc"/>
     </linearGradient>
-    <!-- right chevron: sky → cyan -->
-    <linearGradient id="chevR" x1="1" y1="0" x2="0.6" y2="1">
-      <stop offset="0" stop-color="#38a8f8"/>
-      <stop offset="1" stop-color="#26d0e8"/>
+    <!-- right chevron: apex blue → outer cyan (runs left→right) -->
+    <linearGradient id="chevR" x1="0" y1="0.1" x2="1" y2="0.9">
+      <stop offset="0" stop-color="#08a6fa"/>
+      <stop offset="1" stop-color="#00d2ef"/>
     </linearGradient>
-    <!-- core: violet-magenta → cyan diagonal -->
-    <linearGradient id="core" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#b457f0"/>
-      <stop offset="0.55" stop-color="#5f8df5"/>
-      <stop offset="1" stop-color="#29c8f0"/>
+    <!-- core: magenta-violet holds the upper-left, cyan the lower-right -->
+    <linearGradient id="core" x1="0" y1="0.15" x2="1" y2="0.85">
+      <stop offset="0" stop-color="#b04ffb"/>
+      <stop offset="0.65" stop-color="#4f8bfc"/>
+      <stop offset="1" stop-color="#0cd6fd"/>
+    </linearGradient>
+    <!-- motion lines fade away from the core -->
+    <linearGradient id="dashL" x1="356" y1="0" x2="424" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7c4df5" stop-opacity="0.15"/>
+      <stop offset="1" stop-color="#7c4df5" stop-opacity="0.8"/>
+    </linearGradient>
+    <linearGradient id="dashR" x1="600" y1="0" x2="668" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0db0f5" stop-opacity="0.8"/>
+      <stop offset="1" stop-color="#0db0f5" stop-opacity="0.15"/>
     </linearGradient>
     <!-- soft ambient glow behind the core -->
     <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#4cc3f7" stop-opacity="0.30"/>
-      <stop offset="0.5" stop-color="#4cc3f7" stop-opacity="0.12"/>
+      <stop offset="0" stop-color="#4cc3f7" stop-opacity="0.26"/>
+      <stop offset="0.5" stop-color="#4cc3f7" stop-opacity="0.10"/>
       <stop offset="1" stop-color="#4cc3f7" stop-opacity="0"/>
     </radialGradient>
     <!-- tight glow: blurred copy of the core -->
     <filter id="blur" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="26"/>
+      <feGaussianBlur stdDeviation="16"/>
     </filter>
   </defs>
 
   <!-- rounded-square card -->
-  <rect x="0" y="0" width="1024" height="1024" rx="224" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1024" height="1024" rx="208" fill="url(#bg)"/>
 
   <!-- ambient glow -->
-  <circle cx="512" cy="512" r="230" fill="url(#glow)"/>
+  <circle cx="512" cy="512" r="215" fill="url(#glow)"/>
 
-  <!-- chevrons pressing inward -->
-  <polyline points="218,380 318,512 218,644" fill="none" stroke="url(#chevL)"
-    stroke-width="64" stroke-linecap="round" stroke-linejoin="round"/>
-  <polyline points="806,380 706,512 806,644" fill="none" stroke="url(#chevR)"
-    stroke-width="64" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- chevrons pressing inward: 90° opening, 60px stroke -->
+  <polyline points="223,387 338,512 223,637" fill="none" stroke="url(#chevL)"
+    stroke-width="60" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="801,387 686,512 801,637" fill="none" stroke="url(#chevR)"
+    stroke-width="60" stroke-linecap="round" stroke-linejoin="round"/>
 
-  <!-- motion lines (staggered, fading) -->
-  <g stroke-linecap="round" stroke-width="13" fill="none">
-    <g stroke="#7d6bf0">
-      <line x1="380" y1="478" x2="428" y2="478" opacity="0.5"/>
-      <line x1="362" y1="512" x2="428" y2="512" opacity="0.8"/>
-      <line x1="380" y1="546" x2="428" y2="546" opacity="0.5"/>
+  <!-- motion lines (staggered, fading away from the core) -->
+  <g stroke-linecap="round" stroke-width="11" fill="none">
+    <g stroke="url(#dashL)">
+      <line x1="372" y1="475" x2="422" y2="475" opacity="0.75"/>
+      <line x1="358" y1="512" x2="422" y2="512"/>
+      <line x1="372" y1="549" x2="422" y2="549" opacity="0.75"/>
     </g>
-    <g stroke="#2cc5ea">
-      <line x1="596" y1="478" x2="644" y2="478" opacity="0.5"/>
-      <line x1="596" y1="512" x2="662" y2="512" opacity="0.8"/>
-      <line x1="596" y1="546" x2="644" y2="546" opacity="0.5"/>
+    <g stroke="url(#dashR)">
+      <line x1="602" y1="475" x2="652" y2="475" opacity="0.75"/>
+      <line x1="602" y1="512" x2="666" y2="512"/>
+      <line x1="602" y1="549" x2="652" y2="549" opacity="0.75"/>
     </g>
   </g>
 
   <!-- tight core glow -->
-  <rect x="446" y="446" width="132" height="132" rx="34" fill="url(#core)"
-    filter="url(#blur)" opacity="0.75"/>
-  <!-- core -->
-  <rect x="446" y="446" width="132" height="132" rx="34" fill="url(#core)"/>
+  <rect x="438" y="438" width="148" height="148" rx="44" fill="url(#core)"
+    filter="url(#blur)" opacity="0.7"/>
+  <!-- core: 148px (raster measure minus glow bleed), 30% corner radius -->
+  <rect x="438" y="438" width="148" height="148" rx="44" fill="url(#core)"/>
 
-  <!-- four-point sparkle -->
-  <path fill="#ffffff" d="M512 478
-    Q518 506 546 512 Q518 518 512 546
-    Q506 518 478 512 Q506 506 512 478 Z"/>
+  <!-- four-point sparkle (~46px) -->
+  <path fill="#ffffff" d="M512 489
+    Q516.5 507.5 535 512 Q516.5 516.5 512 535
+    Q507.5 516.5 489 512 Q507.5 507.5 512 489 Z"/>
 </svg>
