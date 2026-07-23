@@ -10,10 +10,10 @@
       <stop offset="0" stop-color="#5b2af9"/>
       <stop offset="1" stop-color="#2f68fc"/>
     </linearGradient>
-    <!-- right chevron: apex blue → outer cyan (runs left→right) -->
-    <linearGradient id="chevR" x1="0" y1="0.1" x2="1" y2="0.9">
-      <stop offset="0" stop-color="#08a6fa"/>
-      <stop offset="1" stop-color="#00d2ef"/>
+    <!-- right chevron: apex blue → outer cyan (defined in mirrored local space: x0 = tips) -->
+    <linearGradient id="chevR" x1="0" y1="0.5" x2="1" y2="0.5">
+      <stop offset="0" stop-color="#00d2ef"/>
+      <stop offset="1" stop-color="#08a6fa"/>
     </linearGradient>
     <!-- core: magenta-violet holds the upper-left, cyan the lower-right -->
     <linearGradient id="core" x1="0" y1="0.15" x2="1" y2="0.85">
@@ -48,11 +48,20 @@
   <!-- ambient glow -->
   <circle cx="512" cy="512" r="215" fill="url(#glow)"/>
 
-  <!-- chevrons pressing inward: 90° opening, 60px stroke -->
-  <polyline points="223,387 338,512 223,637" fill="none" stroke="url(#chevL)"
-    stroke-width="60" stroke-linecap="round" stroke-linejoin="round"/>
-  <polyline points="801,387 686,512 801,637" fill="none" stroke="url(#chevR)"
-    stroke-width="60" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- chevrons pressing inward: 90° opening, 60px bars.
+       Filled outline, not a stroked polyline: tips are flat 45° cuts with r15
+       corners (not pill caps), outer elbow r30, inner elbow r18. -->
+  <defs>
+    <path id="chevron" d="M239.0 370.6
+      L359.2 490.8 A30 30 0 0 1 359.2 533.2
+      L239.0 653.4 A15 15 0 0 1 217.8 653.4
+      L196.6 632.2 A15 15 0 0 1 196.6 611.0
+      L282.9 524.7 A18 18 0 0 0 282.9 499.3
+      L196.6 413.0 A15 15 0 0 1 196.6 391.8
+      L217.8 370.6 A15 15 0 0 1 239.0 370.6 Z"/>
+  </defs>
+  <use href="#chevron" fill="url(#chevL)"/>
+  <use href="#chevron" fill="url(#chevR)" transform="matrix(-1 0 0 1 1024 0)"/>
 
   <!-- motion lines (staggered, fading away from the core) -->
   <g stroke-linecap="round" stroke-width="11" fill="none">
