@@ -1,0 +1,6 @@
+{
+  "description": "A Raycast extension",
+  "type": "node",
+  "framework": "raycast",
+  "archived": false
+}

@@ -1,0 +1,20 @@
+{
+  "template": "typescript/raycast-extension",
+  "template_version": "1.0.0",
+  "template_source": {
+    "type": "local",
+    "path": "/Users/jurrejan/Documents/development/_management/cookiecutter-templates",
+    "git_remote": "git@github.com:doublej/cookiecutter-templates.git",
+    "git_sha": "290b6fef0d20d1d2c1ddfaf738f6f71d3c34ca59"
+  },
+  "rendered_at": "2026-07-23T10:50:19.051629+00:00",
+  "context": {
+    "project_name": "File Scripts",
+    "project_slug": "raycast-ext-file-scripts",
+    "extension_slug": "file-scripts",
+    "description": "A Raycast extension",
+    "author": "jurre_jan",
+    "mcp_servers": "none",
+    "mcp_scope": "project"
+  }
+}

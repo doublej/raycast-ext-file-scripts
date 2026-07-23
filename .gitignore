@@ -1,0 +1,13 @@
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.local
+.env.*.local
+
+node_modules/
+dist/
+raycast-env.d.ts
+
+.claude/claude-tree.*
+**/CLAUDE.md.history.jsonl
