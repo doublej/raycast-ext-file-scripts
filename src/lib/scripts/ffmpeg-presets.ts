@@ -64,10 +64,18 @@ function hevcArgs(p: Prefs, crf: string): string[] {
 const PRESETS: FfmpegPreset[] = [
   {
     id: "fps-15",
-    title: "Reduce Frame Rate",
+    title: "Reduce Frame Rate 15",
     strategy: "fps 60→15, quality kept",
     suffix: ".fps15",
     video: () => ["-vf", "fps=15", ...X264_FAST],
+    audio: "copy",
+  },
+  {
+    id: "fps-30",
+    title: "Reduce Frame Rate 30",
+    strategy: "fps 60→30, quality kept",
+    suffix: ".fps30",
+    video: () => ["-vf", "fps=30", ...X264_FAST],
     audio: "copy",
   },
   {
@@ -93,6 +101,14 @@ const PRESETS: FfmpegPreset[] = [
     strategy: "resolution halved (lanczos)",
     suffix: ".half",
     video: () => ["-vf", SCALE_HALF, ...X264_FAST],
+    audio: "copy",
+  },
+  {
+    id: "fps30-half",
+    title: "30fps + Downscale 50%",
+    strategy: "fps 60→30 + resolution halved",
+    suffix: ".fps30half",
+    video: () => ["-vf", `fps=30,${SCALE_HALF}`, ...X264_FAST],
     audio: "copy",
   },
   {

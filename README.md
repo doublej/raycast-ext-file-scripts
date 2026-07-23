@@ -1,6 +1,6 @@
 # File Scripts
 
-Run scripts on the current Finder selection. Detects what you selected (single file / multiple files / a folder), offers the scripts that apply to those file types, and runs them with live per-file progress. Ships with ffmpeg compression presets for macOS screen recordings — frame-rate reduction, CRF recompress, 50% downscale, HEVC conversion, and a max-squeeze combo. Outputs are new sibling files (`demo.mov` → `demo.fps15.mov`); originals are never touched.
+Run scripts on the current Finder selection. Detects what you selected (single file / multiple files / a folder), offers the scripts that apply to those file types, and runs them with live per-file progress. Ships with ffmpeg compression presets for macOS screen recordings — frame-rate reduction (15/30 fps), CRF recompress, 50% downscale, a 30fps+half-res combo, HEVC conversion, and a max-squeeze combo. Outputs are new sibling files (`demo.mov` → `demo.fps15.mov`); originals are never touched.
 
 ## Requirements
 
