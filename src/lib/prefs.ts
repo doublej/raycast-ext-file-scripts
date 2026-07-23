@@ -8,6 +8,7 @@ export interface Prefs {
   ffprobePath: string;
   extraPath: string;
   hevcEncoder: HevcEncoder;
+  repoPath: string;
 }
 
 function expand(p: string): string {
@@ -21,6 +22,10 @@ export function prefs(): Prefs {
     ffprobePath: expand(raw.ffprobePath || "/opt/homebrew/bin/ffprobe"),
     hevcEncoder:
       raw.hevcEncoder === "hevc_videotoolbox" ? "hevc_videotoolbox" : "libx265",
+    repoPath: expand(
+      raw.repoPath ||
+        "$HOME/Documents/development/raycast/raycast-ext-file-scripts",
+    ),
     extraPath: (raw.extraPath || "")
       .split(":")
       .map(expand)

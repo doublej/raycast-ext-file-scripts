@@ -90,8 +90,10 @@ function rowIcon(row: Row) {
 }
 
 function rowAccessories(row: Row): List.Item.Accessory[] {
-  if (row.status === "done" && row.inBytes && row.outBytes) {
-    return [{ text: sizeDelta(row.inBytes, row.outBytes) }];
+  if (row.status === "done") {
+    return row.inBytes && row.outBytes
+      ? [{ text: sizeDelta(row.inBytes, row.outBytes) }]
+      : [{ text: "done" }];
   }
   if (row.status === "running") {
     return [{ text: row.pct === null ? "…" : `${Math.round(row.pct)}%` }];
@@ -135,7 +137,7 @@ export default function Command() {
     setActiveScript(app.script);
     const ac = new AbortController();
     abortRef.current = ac;
-    const files = app.matched;
+    const files = app.script.runOnce ? app.matched.slice(0, 1) : app.matched;
     setRows(files.map((path) => ({ path, status: "pending", pct: null })));
 
     const toast = await showToast({
@@ -397,7 +399,11 @@ export default function Command() {
                 actions={
                   <ActionPanel>
                     <Action
-                      title={`Run on ${app.matched.length} File${app.matched.length === 1 ? "" : "s"}`}
+                      title={
+                        app.script.runOnce
+                          ? "Run"
+                          : `Run on ${app.matched.length} File${app.matched.length === 1 ? "" : "s"}`
+                      }
                       icon={Icon.Play}
                       onAction={() => startRun(app)}
                     />

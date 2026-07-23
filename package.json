@@ -45,6 +45,14 @@
       ]
     },
     {
+      "name": "repoPath",
+      "type": "textfield",
+      "title": "file-scripts repo",
+      "description": "Source checkout of this extension — where 'Create New Script' opens cld to scaffold a script family",
+      "default": "$HOME/Documents/development/raycast/raycast-ext-file-scripts",
+      "required": false
+    },
+    {
       "name": "extraPath",
       "type": "textfield",
       "title": "Extra PATH dirs",
