@@ -1,8 +1,13 @@
 import { getPreferenceValues } from "@raycast/api";
 import { homedir } from "node:os";
 
+export type HevcEncoder = "libx265" | "hevc_videotoolbox";
+
 export interface Prefs {
+  ffmpegPath: string;
+  ffprobePath: string;
   extraPath: string;
+  hevcEncoder: HevcEncoder;
 }
 
 function expand(p: string): string {
@@ -12,6 +17,10 @@ function expand(p: string): string {
 export function prefs(): Prefs {
   const raw = getPreferenceValues<Prefs>();
   return {
+    ffmpegPath: expand(raw.ffmpegPath || "/opt/homebrew/bin/ffmpeg"),
+    ffprobePath: expand(raw.ffprobePath || "/opt/homebrew/bin/ffprobe"),
+    hevcEncoder:
+      raw.hevcEncoder === "hevc_videotoolbox" ? "hevc_videotoolbox" : "libx265",
     extraPath: (raw.extraPath || "")
       .split(":")
       .map(expand)
