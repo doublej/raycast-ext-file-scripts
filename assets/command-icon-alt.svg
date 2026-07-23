@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <!-- background vignette -->
+    <radialGradient id="bg" cx="0.5" cy="0.46" r="0.75">
+      <stop offset="0" stop-color="#1b1e27"/>
+      <stop offset="1" stop-color="#111319"/>
+    </radialGradient>
+    <!-- left chevron: violet → indigo -->
+    <linearGradient id="chevL" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0" stop-color="#8b5cf6"/>
+      <stop offset="1" stop-color="#5457ea"/>
+    </linearGradient>
+    <!-- right chevron: sky → cyan -->
+    <linearGradient id="chevR" x1="1" y1="0" x2="0.6" y2="1">
+      <stop offset="0" stop-color="#38a8f8"/>
+      <stop offset="1" stop-color="#26d0e8"/>
+    </linearGradient>
+    <!-- core: violet-magenta → cyan diagonal -->
+    <linearGradient id="core" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#b457f0"/>
+      <stop offset="0.55" stop-color="#5f8df5"/>
+      <stop offset="1" stop-color="#29c8f0"/>
+    </linearGradient>
+    <!-- soft ambient glow behind the core -->
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#4cc3f7" stop-opacity="0.30"/>
+      <stop offset="0.5" stop-color="#4cc3f7" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#4cc3f7" stop-opacity="0"/>
+    </radialGradient>
+    <!-- tight glow: blurred copy of the core -->
+    <filter id="blur" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="26"/>
+    </filter>
+  </defs>
+
+  <!-- rounded-square card -->
+  <rect x="0" y="0" width="1024" height="1024" rx="224" fill="url(#bg)"/>
+
+  <!-- ambient glow -->
+  <circle cx="512" cy="512" r="230" fill="url(#glow)"/>
+
+  <!-- chevrons pressing inward -->
+  <polyline points="218,380 318,512 218,644" fill="none" stroke="url(#chevL)"
+    stroke-width="64" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="806,380 706,512 806,644" fill="none" stroke="url(#chevR)"
+    stroke-width="64" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- motion lines (staggered, fading) -->
+  <g stroke-linecap="round" stroke-width="13" fill="none">
+    <g stroke="#7d6bf0">
+      <line x1="380" y1="478" x2="428" y2="478" opacity="0.5"/>
+      <line x1="362" y1="512" x2="428" y2="512" opacity="0.8"/>
+      <line x1="380" y1="546" x2="428" y2="546" opacity="0.5"/>
+    </g>
+    <g stroke="#2cc5ea">
+      <line x1="596" y1="478" x2="644" y2="478" opacity="0.5"/>
+      <line x1="596" y1="512" x2="662" y2="512" opacity="0.8"/>
+      <line x1="596" y1="546" x2="644" y2="546" opacity="0.5"/>
+    </g>
+  </g>
+
+  <!-- tight core glow -->
+  <rect x="446" y="446" width="132" height="132" rx="34" fill="url(#core)"
+    filter="url(#blur)" opacity="0.75"/>
+  <!-- core -->
+  <rect x="446" y="446" width="132" height="132" rx="34" fill="url(#core)"/>
+
+  <!-- four-point sparkle -->
+  <path fill="#ffffff" d="M512 478
+    Q518 506 546 512 Q518 518 512 546
+    Q506 518 478 512 Q506 506 512 478 Z"/>
+</svg>
