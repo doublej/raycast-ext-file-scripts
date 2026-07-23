@@ -11,3 +11,4 @@ raycast-env.d.ts
 
 .claude/claude-tree.*
 **/CLAUDE.md.history.jsonl
+tmp/
